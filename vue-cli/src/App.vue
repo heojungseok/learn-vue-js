@@ -3,7 +3,8 @@
   <div>
     App Start 
     {{ str }}
-    <app-header :propsdata="str"></app-header>
+    <app-header :propsdata="str"
+    v-on:renew="renewStr"></app-header>
   </div>
 </template>
 
@@ -17,6 +18,12 @@ export default {
   },
   components: {
     'app-header' : AppHeader
+  },
+  methods: {
+    renewStr(e) {
+      console.log('event emit', e);
+      // this.str = e;
+    }
   }
 }
 </script>
