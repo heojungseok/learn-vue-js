@@ -3,15 +3,20 @@
   <div>
     App Start 
     {{ str }}
+    <app-header :propsdata="str"></app-header>
   </div>
 </template>
 
 <script>
+import AppHeader from './components/AppHeader.vue';
 export default {
   data() {
     return {
       str : 'hi'
     }
+  },
+  components: {
+    'app-header' : AppHeader
   }
 }
 </script>
