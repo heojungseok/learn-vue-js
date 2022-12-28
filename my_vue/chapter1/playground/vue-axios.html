@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue-aioxs</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <button type="button" @click="getData">get Data!</button>
+        <div v-for="user in users">
+            <div>
+                id: {{ user.id }}
+                name: {{ user.name }}
+                email: {{ user.email }}
+                address : {{ user.address}}
+            </div>
+            <br>
+        </div> 
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+    <!-- axios - 뷰에서 권고하는  HTTP 통신 라이브러리, Promise 기반의 HTTP 통신 라이브러리
+    상대적으로 다른 HTTP 통신에 비해 문서화가 잘 돼있고 API 다양함  -->
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                users: []
+            },
+            methods: {
+                getData: function () {
+                    var vm = this;
+                    axios.get('https://jsonplaceholder.typicode.com/users/')
+                        .then(function (response) {
+                            // 성공 시 진입
+                            console.log(response.data);
+                            vm.users = response.data;
+                        })
+                        .catch(function (error) {
+                            // 실패 시 진입
+                            console.log(error);
+                        });
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

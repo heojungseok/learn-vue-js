@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app" >
+        <div>
+            <!-- 특정 페이지로 이동 되는 태그  <a></a> 앵커 태그와 역할 동일 -->
+            <router-link to="/login">login</router-link>
+            <router-link to="/home">home</router-link>
+        </div>
+        <!-- 특정 component 가 뿌려지는 태그 -->
+        <router-view :propdata="testdata" @emit-comp="testView"></router-view> 
+    </div>
+    <div style="white-space: pre;"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+    <script>
+
+        let LoginComp = {
+            props:['propdata'],
+            template: `
+            <div>
+                <div>
+                    <h3>Login</h3>
+                </div>
+                <div> 
+                    <div style="white-space: pre;">
+                    {{ propdata }} 
+                    </div>
+                </div>
+                <textarea cols="30" rows="10" @input="$emit('emit-comp', $event)" type="text"></textarea>
+            </div>
+            
+            `,
+        }
+        
+        let HomeComp = {
+            template: `
+            <div>Home</div>
+            `,
+        }
+
+        let router = new VueRouter({
+            routes: [
+                {   // 헤딩 페이지에 등록되는 컴포넌트는 하나
+                    path: '/login', component: LoginComp
+                },
+                {
+                    path: '/home', component: HomeComp
+                },
+            ]
+        });
+
+        let vm = new Vue({
+            el: '#app',
+            router,
+            data: {
+                testdata: '',
+            },
+            methods: {
+                testView(e) {
+                    this.testdata = e.target.value;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

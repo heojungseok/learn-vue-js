@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <app-header :pp="temp1"  @go_root="arrivedData"></app-header>
+        <app-content :pp="temp2" @go_root2="clickEvt"></app-content>
+        number : {{temp3}}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        let childComp = {
+            template: `<input @input = "$emit('emitComp', $event)" style = "padding: 20px; border: 1px pink solid">`,
+        };
+        let appHeader = {
+            template: `
+            <div>
+            <div> 1. {{ pp }} </div>
+            <child-comp :ttt="pp" @emitComp="testEmit"></child-comp>
+            </div>`,
+            props: ['pp'],
+            components: {
+                'child-comp': childComp,
+            },
+            methods: {
+                testEmit(e) {
+                    this.$emit('go_root', e.target.value);
+                }
+            }
+        };
+        let childComp2 = {
+            template: `<button type="button" style="padding: 20px; border: 1px pink solid" @click="$emit('clickMe')"> clink me ~ </button>`,
+        };
+        let appContent = {
+            template: `
+            <div>
+            <div>{{ pp }}</div>
+            <child-comp2 @clickMe="clickBtn"></child-comp2>
+            </div>`,
+            props: ['pp'],
+            components: {
+                'child-comp2': childComp2
+            },
+            methods: {
+                clickBtn() {
+                    this.$emit('go_root2');
+                }
+            }
+        };
+       
+        let vm = new Vue({
+            el: '#app',
+            components: {
+                'app-header': appHeader,
+                'app-content': appContent
+            },
+            data: {
+                temp1: 'Hi, props & emit',
+                temp2: 'live in here',
+                temp3: 0
+            },
+            methods: {
+                arrivedData(e) {
+                    this.temp2 = e;
+                },
+                clickEvt(e) {
+                    this.temp3++;
+                } 
+            }
+        });
+    </script>
+</body>
+
+</html>
